@@ -8,7 +8,8 @@ COPY app/server.ts /home/server.ts
 RUN apk add curl && \
   curl -fsSL https://deno.land/x/install/install.sh | sh && \
   DENO_INSTALL="/root/.deno" && \
-  PATH="$DENO_INSTALL/bin:$PATH"
+  PATH="$DENO_INSTALL/bin:$PATH" && \
+  deno --version 
 
 EXPOSE 8080
 
