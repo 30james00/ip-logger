@@ -1,17 +1,16 @@
-FROM scratch
+FROM denoland/deno as build
 
-# https://dl-cdn.alpinelinux.org/alpine/v3.14/releases/x86_64/alpine-netboot-3.14.2-x86_64.tar.gz
-ADD alpine-minirootfs-3.14.2-x86_64.tar.gz .
-COPY app/server.ts /home/server.ts
-
-# Install Deno
-RUN apk add curl && \
-  curl -fsSL https://deno.land/x/install/install.sh | sh && \
-  DENO_INSTALL="/root/.deno" && \
-  PATH="$DENO_INSTALL/bin:$PATH" && \
-  deno --version 
-
+# The port that your application listens to.
 EXPOSE 8080
 
-ENTRYPOINT [ "deno" ] 
-CMD [ "run", "--allow-net", "/home/server.ts" ]
+WORKDIR /app
+
+# Prefer not to run as root.
+USER deno
+
+# These steps will be re-run upon each file change in your working directory:
+COPY app/server.ts main.ts
+
+# Compile the main app so that it doesn't need to be compiled each startup/entry.
+
+CMD ["run", "--allow-net", "main.ts"]

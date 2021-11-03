@@ -1,37 +1,19 @@
+import { Application } from "https://deno.land/x/oak/mod.ts";
 const port = 8080;
 
 const date = new Date().toLocaleString('pl-PL');
 
-const server = Deno.listen({ port });
-
 // log date name and port (1a)
 console.log(`${date}\nMS\nPort: ${port}`);
 
-// handle connection
-for await (const conn of server) {
-  (async () => {
-    // create HTTP connection
-    const httpConn = Deno.serveHttp(conn);
-    // handle request
-    for await (const requestEvent of httpConn) {
-      // get ip from request header
-      const ip =
-        requestEvent.request.headers.get('host')?.split(':')[0] ?? 'unknown';
-      // check ip
-      if (ip != 'unknown') {
-        // create response body
-        const body = `${ip}\n`;
-        requestEvent.respondWith(
-          new Response(body, {
-            status: 200,
-          })
-        );
-      }
-      // handle error
-      requestEvent.respondWith(new Response('IP not found', { status: 400 }));
-    }
-  })();
-}
+
+const app = new Application();
+
+app.use((ctx) => {
+  ctx.response.body = ctx.request.ip;
+});
+
+await app.listen({ port });
 
 async function getTime(url: string): Promise<string> {
   try {
@@ -49,6 +31,6 @@ async function getTime(url: string): Promise<string> {
     return `Your timezone: ${timeZone}\nDate in your IP's timezone: ${date}`;
   } catch (error) {
     console.log(error);
-    return "error";
+    return 'error';
   }
 }
