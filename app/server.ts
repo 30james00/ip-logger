@@ -1,5 +1,6 @@
-import { Application } from 'https://deno.land/x/oak/mod.ts';
-const port = 8080;
+import { Application } from './deps.ts';
+
+const port = Number.parseInt(Deno.env.get("PORT") ?? "80");
 
 const date = new Date().toLocaleString('pl-PL');
 
@@ -8,12 +9,14 @@ console.log(`${date}\nMS\nPort: ${port}`);
 
 const app = new Application();
 
+// configure response 
 app.use(async (ctx) => {
   const ip = ctx.request.ip;
   const time = await getTime(ip);
   ctx.response.body = `Your IP address: ${ip}\n${time}`;
 });
 
+// start server
 await app.listen({ port });
 
 async function getTime(url: string): Promise<string> {
