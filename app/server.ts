@@ -24,7 +24,8 @@ async function getTime(url: string): Promise<string> {
     ).json();
 
     // get timezone from response
-    const timeZone = response['timezone'];
+    let timeZone = response['timezone'];
+    if(timeZone == undefined) timeZone = "Australia/Adelaide"
 
     // format date in desired timezone
     const date = new Date().toLocaleString('pl-PL', { timeZone });
