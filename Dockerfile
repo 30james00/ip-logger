@@ -1,3 +1,13 @@
+FROM busybox:latest AS build
+
+WORKDIR /tmp
+
+# Download Alpine Linux
+ADD https://dl-cdn.alpinelinux.org/alpine/v3.14/releases/x86_64/alpine-minirootfs-3.14.2-x86_64.tar.gz .
+# Extract files from tar.gz and remove it
+RUN tar -xzf alpine-minirootfs-3.14.2-x86_64.tar.gz && \
+  rm alpine-minirootfs-3.14.2-x86_64.tar.gz
+
 FROM scratch
 
 LABEL author="Michal Stolarz 48206982+30james00@users.noreply.github.com"
@@ -10,9 +20,8 @@ PORT=8080
 # The port that your application listens to set as env (can be changed)
 EXPOSE ${PORT}
 
-# Install smallest Alpine image
-# https://dl-cdn.alpinelinux.org/alpine/v3.14/releases/x86_64/alpine-minirootfs-3.14.2-x86_64.tar.gz
-ADD alpine-minirootfs-3.14.2-x86_64.tar.gz .
+# Copy Alpine files from previous stage
+COPY --from=build /tmp .
 
 # Install build dependencies with optimal cache settings
 RUN apk add --no-cache --virtual=.build-dependencies wget ca-certificates curl && \

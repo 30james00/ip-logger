@@ -2,7 +2,7 @@
 
 ## Zadanie 1
 
-3. (max. 20%)  
+### 3. (max. 20%)  
 Należy podać polecenia niezbędne do:  
 a. zbudowania opracowanego obrazu kontenera  
 `docker build --tag local/z1 .`  
@@ -13,3 +13,5 @@ c. sposobu uzyskania informacji, które wygenerował serwer w trakcie uruchamian
 `docker container logs z1`  
 d. sprawdzenia, ile warstw posiada zbudowany obraz  
 `docker history local/z1`
+
+### 4.
