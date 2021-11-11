@@ -15,3 +15,9 @@ d. sprawdzenia, ile warstw posiada zbudowany obraz
 `docker history local/z1`
 
 ### 4.
+Budowanie obrazu z repozytorium na GitHub:  
+`docker build --tag local/z1 https://github.com/30james00/ip-logger.git`
+
+Umieszczanie obrazu na DockerHub:  
+1. Tworzę repozytorium na hub.docker.com
+2. 

@@ -14,8 +14,8 @@ LABEL author="Michal Stolarz 48206982+30james00@users.noreply.github.com"
 
 # Set environmental varialbes for Deno location and port
 ENV DENO_INSTALL="/root/.deno" \
-PATH="/root/.deno/bin:${PATH}" \
-PORT=8080
+  PATH="/root/.deno/bin:${PATH}" \
+  PORT=8080
 
 # The port that your application listens to set as env (can be changed)
 EXPOSE ${PORT}
@@ -25,7 +25,7 @@ COPY --from=build /tmp .
 
 # Install build dependencies with optimal cache settings
 RUN apk add --no-cache --virtual=.build-dependencies wget ca-certificates curl && \
-# Install glibc to run Deno (code is copied from frolvlad/alpine-glibc)
+  # Install glibc to run Deno (code is copied from frolvlad/alpine-glibc)
   ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" && \
   ALPINE_GLIBC_PACKAGE_VERSION="2.33-r0" && \
   ALPINE_GLIBC_BASE_PACKAGE_FILENAME="glibc-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
@@ -61,10 +61,10 @@ RUN apk add --no-cache --virtual=.build-dependencies wget ca-certificates curl &
   "$ALPINE_GLIBC_BASE_PACKAGE_FILENAME" \
   "$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" \
   "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME" && \
-# End of copied code
-# Install Deno from script https://deno.land/manual/getting_started/installation 
+  # End of copied code
+  # Install Deno from script https://deno.land/manual/getting_started/installation 
   curl -fsSL https://deno.land/x/install/install.sh | sh && \
-# Remove build dependencies
+  # Remove build dependencies
   apk del .build-dependencies
 
 WORKDIR /app
@@ -79,5 +79,5 @@ COPY app/server.ts .
 # Compile the main app so that it doesn't need to be compiled each startup/entry.
 RUN deno cache server.ts
 
-ENTRYPOINT [ "deno" ]
+ENTRYPOINT ["deno"]
 CMD ["run", "--allow-net", "--allow-env", "server.ts"]
