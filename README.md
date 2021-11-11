@@ -45,5 +45,5 @@ b. należy pobrać obraz ubuntu w najnowszej wersji a następnie, zmienić jego 
 `docker run -d -p 6677:5000 --name registry -v "$(pwd)"/auth:/auth -e "REGISTRY_AUTH=htpasswd" -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd registry`
 3. Logowanie z użyciem wcześniej utworzonego konta  
 `docker login localhost:6677`
-4. Testowe umieszczenie obrazu w rejestrze
+4. Testowe umieszczenie obrazu w rejestrze  
 `docker push localhost:6677/ubuntu`
